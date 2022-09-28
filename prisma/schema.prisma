@@ -28,6 +28,8 @@ model Post {
   author User @relation(fields: [authorId], references: [id])
   authorId String @db.ObjectId
   Comments Comment[]
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId String @db.ObjectId
 }
 
 model Comment {
@@ -38,4 +40,10 @@ model Comment {
   authorId String @db.ObjectId
   post Post @relation(fields: [postId], references: [id])
   postId String @db.ObjectId
+}
+
+model Category{
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  theme String
+  posts Post[]
 }
