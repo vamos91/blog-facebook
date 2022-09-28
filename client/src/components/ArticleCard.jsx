@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {Card, CardImg, CardBody, CardTitle, CardText, Button} from "reactstrap"
+import { FaHeart } from 'react-icons/fa';
 
 const ArticleCard = (props) => {
     const navigate = useNavigate()
@@ -28,6 +29,7 @@ const ArticleCard = (props) => {
                     {props.article.body}
                 </CardText>
                 <Button onClick={() => gotToArticle(props.article)}>Voir article</Button>
+                <FaHeart />
                 <CardText>
                     <small className="text-muted">
                     Last updated 3 mins ago

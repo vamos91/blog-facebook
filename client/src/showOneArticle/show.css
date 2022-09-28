@@ -1,4 +1,11 @@
 .show-one-article{
-    width: 90%;
+    width: 60%;
     margin: auto;
+}
+
+.formulaire{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
 }

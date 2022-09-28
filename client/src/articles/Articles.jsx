@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import ArticleCard from '../components/ArticleCard';
-import('./article.css')
+import ('./article.css')
+
 
 const Articles = () => {
     const [articles, setArticle] = useState([])
@@ -20,6 +21,7 @@ const Articles = () => {
 
     return (
         <div className='article'>
+            
             <Container>
                 <Row>
                 {
