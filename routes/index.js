@@ -65,6 +65,11 @@ router.post('/article/new', async (req, res) => {
         connect:{
           id: user.id
         }
+      },
+      category:{
+        connect:{
+          id: category.id
+        }
       }
     }
   })

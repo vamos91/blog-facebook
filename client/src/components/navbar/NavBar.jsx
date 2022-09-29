@@ -14,15 +14,32 @@ import {
   DropdownMenu,
   DropdownItem,
   NavbarText,
+  Form,
+  Input,
+  FormGroup
 } from 'reactstrap';
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
-function NavBar(args) {
+function NavBar() {
   const [modal, setModal] = useState(false);
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
 
-  const toggleModal = () => setModal(!modal);
+  const toggleModal = async () => {
+    setModal(!modal);
+    const postDataToBack = await fetch('/article/new', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "Application/json",
+        "token": "yADyeawBFB5tCQZ"
+      },
+      body: JSON.stringify({title: title, content: content})
+    })
+    const postDataToBackJson = await postDataToBack.json()
+    console.log(postDataToBackJson)
+  }
 
 
   return (
@@ -44,20 +61,31 @@ function NavBar(args) {
 
       <Modal isOpen={modal} fade={false} toggle={toggleModal}>
         <ModalBody>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          <Form>
+            <FormGroup>
+              <Input 
+                placeholder="Title" 
+                onChange={(e) => setTitle(e.target.value)}
+                value = {title}
+                />
+            </FormGroup>
+            <FormGroup>
+              <Input 
+                type="textarea" 
+                placeholder='Content' 
+                rows='10' 
+                onChange={(e) => setContent(e.target.value)}
+                value = {content}
+                />
+            </FormGroup>
+          </Form>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={toggleModal}>
-            Do Something
+            Valider
           </Button>{' '}
           <Button color="secondary" onClick={toggleModal}>
-            Cancel
+            Annuler
           </Button>
         </ModalFooter>
       </Modal>

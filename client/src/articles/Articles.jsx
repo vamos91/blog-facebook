@@ -25,8 +25,8 @@ const Articles = () => {
             <Container>
                 <Row>
                 {
-                    articles.map((article) => (
-                    <Col md="4">
+                    articles.map((article, index) => (
+                    <Col md="4" key={index}>
                         <ArticleCard key={article.id} article={article} />
                     </Col>
                         

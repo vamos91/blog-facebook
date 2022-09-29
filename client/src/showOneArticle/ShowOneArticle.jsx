@@ -63,8 +63,8 @@ const ShowOneArticle = () => {
             </Card>
             <ListGroup>
                 {
-                    comments.map((comment) => (
-                        <ListGroupItem>
+                    comments.map((comment, index) => (
+                        <ListGroupItem key={index}>
                             <ListGroupItemHeading>
                                 {comment.title}
                             </ListGroupItemHeading>
