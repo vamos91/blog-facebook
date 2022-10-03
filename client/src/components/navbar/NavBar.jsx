@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom'
 
 import {
@@ -23,11 +24,26 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
 function NavBar() {
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState(false)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('')
+  const [categories, setCategories] = useState([])
+
+  useEffect(() => {
+    const getCategory = async () => {
+      const categoriesFromBack = await fetch('/categories')
+      const categoriesFromBackJson = await categoriesFromBack.json()
+      setCategories(categoriesFromBackJson)
+    }
+    getCategory()
+  }, [])
 
   const toggleModal = async () => {
+    setModal(!modal);
+  }
+
+  const sendForm = async () => {
     setModal(!modal);
     const postDataToBack = await fetch('/article/new', {
       method: 'POST',
@@ -35,7 +51,7 @@ function NavBar() {
         "Content-Type": "Application/json",
         "token": "yADyeawBFB5tCQZ"
       },
-      body: JSON.stringify({title: title, content: content})
+      body: JSON.stringify({title: title, content: content, category: selectedCategory})
     })
     const postDataToBackJson = await postDataToBack.json()
     console.log(postDataToBackJson)
@@ -44,7 +60,7 @@ function NavBar() {
 
   return (
     <div>
-      <Navbar color='danger' expand='md'>
+      <Navbar color='primary' expand='md'>
         <NavbarBrand href="/">Blog</NavbarBrand>
           <Nav className="me-auto" navbar>
             <Link to="/">
@@ -54,6 +70,7 @@ function NavBar() {
               <NavLink>My articles</NavLink>
             </Link>
               <NavLink onClick={() => toggleModal()}>New article</NavLink>
+              <Button>Articles favoris</Button>
           </Nav>
           <NavLink><Button color="default">Signin</Button></NavLink>
           <NavLink><Button color="warning">Signup</Button></NavLink>
@@ -78,10 +95,26 @@ function NavBar() {
                 value = {content}
                 />
             </FormGroup>
+            <FormGroup>
+              <Input
+                name="select"
+                type="select"
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                value = {selectedCategory}
+              >
+                {
+                  categories.map((category, index) => (
+                    <option key={index}>
+                      {category.theme}
+                    </option>
+                  ))
+                }
+              </Input>
+            </FormGroup>
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={toggleModal}>
+          <Button color="primary" onClick={() => sendForm()}>
             Valider
           </Button>{' '}
           <Button color="secondary" onClick={toggleModal}>

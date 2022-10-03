@@ -7,8 +7,12 @@ import { useState } from 'react';
 const ArticleCard = (props) => {
     const navigate = useNavigate()
     const [like, setLike] = useState(false)
-    const gotToArticle = (title) => {
+    const gotToArticle = () => {
         navigate('/my-article/' + props.article.id, {state: props.article})
+    }
+
+    const chooseCategory = () => {
+        props.handleParentProps(props.category.id)
     }
 
     return (
@@ -28,10 +32,16 @@ const ArticleCard = (props) => {
                     {props.article.title} <FaHeart style={like ? {color: 'red'} : {color: 'gray'}} onClick={() => setLike(!like)} />
                 </CardTitle>
                 <CardText>
-                    {props.article.body}
+                    {
+                        props.article.body.split(' ').slice(0, 20).join('') + '[...]'
+                    }
                 </CardText>
-                <Button onClick={() => gotToArticle(props.article)}>Voir article</Button>
-                
+                <Button onClick={() => gotToArticle()}>Voir article</Button>
+                <Button color='success' onClick={() => chooseCategory()}>
+                    {
+                        props.category.theme
+                    }
+                    </Button>
                 <CardText>
                     <small className="text-muted">
                     Last updated 3 mins ago

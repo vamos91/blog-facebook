@@ -10,6 +10,11 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/categories', async (req, res) => {
+ const categories = await prisma.category.findMany()
+ res.json(categories)
+})
+
 router.post('/user/new', (req, res) => {
 
   const hashPassword = bcrypt.hashSync(req.body.password, 10)
@@ -57,6 +62,12 @@ router.post('/article/new', async (req, res) => {
     message = 'User not found'
   }
 
+  const category = await prisma.category.findFirst({
+    where: {
+      theme: req.body.category
+    }
+  })
+
   const post = await prisma.post.create({
     data:{
       title: req.body.title,
@@ -80,6 +91,18 @@ router.post('/article/new', async (req, res) => {
 
 res.json({message: message, post: post})
 
+})
+
+router.get('/article/category/:id', async (req, res) => {
+  console.log(req.params.id)
+  const articleByCategory = await prisma.post.findMany({
+    where:{
+      category:{
+        id: req.params.id
+      }
+    }
+  })
+  res.json({posts: articleByCategory})
 })
 
 router.post('/article/:id/comment/new', async (req, res) => {
